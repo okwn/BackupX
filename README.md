@@ -66,6 +66,59 @@ For ARM64 hosts, use `backupx-linux-arm64.tar.gz`. The archive contains `backupx
 
 Open `http://your-server:8340`, create the admin account, then follow the [5-minute Quick Start](https://awuqing.github.io/BackupX/docs/getting-started/quick-start).
 
+## Troubleshooting
+
+### Port 8340 already in use
+
+If port 8340 is occupied, either stop the conflicting service or run BackupX on a different port:
+
+```bash
+# Stop the conflicting service
+sudo fuser -k 8340/tcp
+
+# Or set a custom port via environment variable
+docker run -d --name backupx -p 9000:8340 -v backupx-data:/app/data -e PORT=8340 awuqing/backupx:latest
+```
+
+For bare-metal installs, edit `config.example.yaml` and set `server.port` to your desired value before starting.
+
+### WSL-specific notes
+
+- **Network access from Windows host:** WSL2 uses an internal NAT. Access the app at `http://localhost:8340` if you mapped port 8340 with `-p 8340:8340`.
+- **WSL1 vs WSL2:** WSL1 has better filesystem performance for local databases; WSL2 works but may have slightly higher I/O overhead.
+- **Docker Desktop:** If using Docker Desktop with WSL2 backend, ensure the Docker daemon is reachable from within WSL.
+
+### Permission issues
+
+```bash
+# Ownership: if the container can't write to the volume
+sudo chown -R 1000:1000 ./backupx-data
+
+# Or run with explicit user (if your UID/GID are non-1000)
+docker run -d --name backupx -p 8340:8340 -v $(pwd)/backupx-data:/app/data --user $(id -u):$(id -g) awuqing/backupx:latest
+```
+
+For bare-metal installs, ensure the user running `backupx` has read/write permissions on the data directory and log files.
+
+### Database path problems
+
+BackupX stores its SQLite database at `/app/data/backupx.db` inside the container (mapped to the Docker volume or host directory). If you see errors about locked or missing databases:
+
+```bash
+# Verify the volume is mounted correctly
+docker inspect backupx --format '{{range .Mounts}}{{.Source}} -> {{.Destination}}{{"\n"}}{{end}}'
+
+# Check the container logs for SQLite errors
+docker logs backupx | grep -i sqlite
+```
+
+For bare-metal, the default data directory is `./data` relative to the binary. Set a custom path via `config.example.yaml`:
+
+```yaml
+database:
+  path: /var/lib/backupx/backupx.db
+```
+
 ## Documentation
 
 The full docs live at **https://awuqing.github.io/BackupX/** — Getting Started, Deployment, SAP HANA, Multi-Node Cluster, API reference, and more. Switch to Chinese via the language dropdown in the top-right nav.

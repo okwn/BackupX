@@ -1,0 +1,32 @@
+# BackupX Docker Compose
+#
+# 快速启动：docker compose up -d
+# 访问地址：http://localhost:8340
+#
+# 如需从源码构建镜像（而非拉取线上镜像），取消注释 build 行并注释 image 行。
+
+services:
+  backupx:
+    image: awuqing/backupx:latest
+    # build: .                              # 从源码构建时取消此行注释
+    container_name: backupx
+    restart: unless-stopped
+    ports:
+      - "8340:8340"
+    volumes:
+      - backupx-data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock  # 支持 Web 一键更新
+      # 挂载需要备份的宿主机目录（按需添加，:ro 表示只读）：
+      # - /var/www:/mnt/www:ro
+      # - /etc/nginx:/mnt/nginx-conf:ro
+      # - /home/user/data:/mnt/data:ro
+    environment:
+      - TZ=Asia/Shanghai
+      # 远程 Agent 需要通过公网或可路由地址连接 Master 时，取消注释并改成真实 URL：
+      # - BACKUPX_SERVER_EXTERNAL_URL=https://backup.example.com
+      # 通过 BACKUPX_ 前缀环境变量覆盖配置：
+      # - BACKUPX_LOG_LEVEL=debug
+      # - BACKUPX_BACKUP_MAX_CONCURRENT=4
+
+volumes:
+  backupx-data:

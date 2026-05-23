@@ -19,6 +19,7 @@
     <a href="https://awuqing.github.io/BackupX/"><strong>Docs</strong></a> ·
     <a href="https://github.com/Awuqing/BackupX/releases"><strong>Downloads</strong></a> ·
     <a href="https://hub.docker.com/r/awuqing/backupx"><strong>Docker Hub</strong></a>
+    <a href="https://hub.docker.com/r/awuqing/backupx"><img src="https://img.shields.io/docker/pulls/awuqing/backupx?style=flat-square" alt="Docker Pulls"></a>
   </p>
 </p>
 
@@ -97,3 +98,4 @@ Issues and pull requests welcome. Please read the [contributing guide](https://a
 ## License
 
 [Apache License 2.0](LICENSE)
+

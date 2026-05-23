@@ -97,3 +97,10 @@ Issues and pull requests welcome. Please read the [contributing guide](https://a
 ## License
 
 [Apache License 2.0](LICENSE)
+
+## Prerequisites
+
+- Docker Engine 24.0+
+- Docker Compose v2.17.0+
+- 4GB RAM minimum
+

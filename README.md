@@ -155,3 +155,6 @@ Issues and pull requests welcome. Please read the [contributing guide](https://a
 ## License
 
 [Apache License 2.0](LICENSE)
+
+## Contributing
+PRs welcome!

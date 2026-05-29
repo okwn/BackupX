@@ -158,3 +158,6 @@ Issues and pull requests welcome. Please read the [contributing guide](https://a
 
 ## Contributing
 PRs welcome!
+
+<!-- Contributor: Arvuno - documentation update -->
+
